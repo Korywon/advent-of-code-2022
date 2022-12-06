@@ -67,14 +67,34 @@ defmodule AdventOfCode.Day5.Part1 do
     end)
   end
 
-  def solve() do
+  def perform_procedure_v2(procedure, stack) do
+    from = procedure.from - 1
+    to = procedure.to - 1
+
+    {new_from_list, crates} = stack
+    |> Enum.at(from)
+    |> Enum.split(-procedure.move)
+
+    new_to_list = stack
+    |> Enum.at(to)
+    |> Enum.concat(crates)
+
+    stack
+    |> List.replace_at(from, new_from_list)
+    |> List.replace_at(to, new_to_list)
+  end
+
+  def solve(part) do
     {cargo_list, procedures_list} = read_input()
     |> Enum.split_while(fn line -> not String.match?(line, ~r/m.*/) end)
 
     stack = cargo_list_to_stack(cargo_list)
     procedures = process_procedure_list(procedures_list)
 
-    Enum.reduce(procedures, stack, &perform_procedure/2)
+    case part do
+      1 -> Enum.reduce(procedures, stack, &perform_procedure/2)
+      2 -> Enum.reduce(procedures, stack, &perform_procedure_v2/2)
+    end
     |> Enum.map(&List.last/1)
     |> Enum.join("")
   end

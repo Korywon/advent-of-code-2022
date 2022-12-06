@@ -86,7 +86,11 @@ defmodule AdventOfCode.Day5.Part1Test do
     ]
   end
 
-  test "solve" do
-    assert solve() == "TDCHVHJTG"
+  test "solve correctly solves part 1" do
+    assert solve(1) == "TDCHVHJTG"
+  end
+
+  test "solve correctly solves part 2" do
+    assert solve(2) == "NGCMPJLHV"
   end
 end
